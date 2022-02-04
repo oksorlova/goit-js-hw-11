@@ -25,3 +25,22 @@
   background-size: cover;
   background-position: center;
 }
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  margin-left: 100px;
+  
+  
+}
+
+.photo-card {
+  display: block;
+  margin: 20px;
+
+}
+
+.is-hidden {
+  display: none;
+}
