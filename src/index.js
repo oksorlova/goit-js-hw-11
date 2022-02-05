@@ -17,8 +17,9 @@ form.addEventListener ('submit', onSearch);
 
 function onSearch(e) {
     e.preventDefault();
+
     loadMoreBtn.classList.remove ('is-hidden');
-    
+
     clearContainer();
     pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value;
     pixabayApi.resetPage ();
