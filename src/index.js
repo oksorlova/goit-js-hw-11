@@ -3,9 +3,6 @@ import PixabayApi from './pixabay-api';
 import Notiflix from 'notiflix';
 
 
-fetch ('https://pixabay.com/api/?key=11538931-2af4b5ad07badda1fd47b2159&q=cat&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=1')
-.then (response => response.json()).then(console.log);
-
 const form = document.querySelector('#search-form');
 const loadMoreBtn = document.querySelector ('.load-more');
 const gallery = document.querySelector ('.gallery');
@@ -16,12 +13,12 @@ loadMoreBtn.addEventListener ('click', onLoadMore)
 
 form.addEventListener ('submit', onSearch);
 
-function onSearch(e) {
+async function onSearch(e) {
   e.preventDefault();
   clearContainer();
   pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value;
   pixabayApi.resetPage ();
-pixabayApi.fetchPicture().then(hits => {
+await pixabayApi.fetchPicture().then(async hits => {
   containerMarkup(hits)
   console.log(pixabayApi.totalHits.totalHits)
   if (pixabayApi.totalHits.totalHits > 40) {
@@ -42,8 +39,8 @@ pixabayApi.fetchPicture().then(hits => {
 
     
 
-function onLoadMore() {
-    pixabayApi.fetchPicture().then(containerMarkup);
+async function onLoadMore() {
+    await pixabayApi.fetchPicture().then(containerMarkup);
 
     
 }
