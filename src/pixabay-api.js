@@ -30,7 +30,7 @@ export default class PixabayApi {
       
                 }
 
-                if (response.data.totalHits.length === 0) {
+                if (response.data.hits / 40 !== 1 && response.data.hits.length !== 0 ) {
                             Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
                             
                         }
@@ -55,7 +55,6 @@ export default class PixabayApi {
         this.query = newQuery;
       }
     }
-
 //     fetchPicture() {
 //         return fetch (`https://pixabay.com/api/?key=11538931-2af4b5ad07badda1fd47b2159&q=${this.query}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`)
         
