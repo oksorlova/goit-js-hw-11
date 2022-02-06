@@ -29,24 +29,27 @@ await pixabayApi.fetchPicture().then( hits => {
     Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
               loadMoreBtn.classList.add ('is-hidden');
   }
+
+  
+  
       
 });
-};
+}
+
 
     
 
 async function onLoadMore() {
-    await pixabayApi.fetchPicture().then(async hits => {
-      await containerMarkup(hits)
-      if (pixabayApi.totalHits.totalHits <= 40 && hits.length !== 0 ) {
-        Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
-                                loadMoreBtn.classList.add ('is-hidden');
-      }
-    
-    })
+    await pixabayApi.fetchPicture().then( hits => {
+       containerMarkup(hits)
+
+       
+  
+})
+
 }
 
-function containerMarkup (hits) {
+async function containerMarkup (hits) {
     let hitsList = hits.map((elem) => { return `<div class="photo-card">
     <img src="${elem.webformatURL}" alt="${elem.tags}" loading="lazy"  width = "320"/>
     <div class="info">
@@ -65,14 +68,15 @@ function containerMarkup (hits) {
     </div>
   </div>`}).join('');
 
-  gallery.insertAdjacentHTML ('beforeend', hitsList);
+  await gallery.insertAdjacentHTML ('beforeend', hitsList);
 
   let maxPage = Math.ceil(pixabayApi.totalHits.totalHits / 40)
   if (maxPage === pixabayApi.page - 1) {
     Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
     loadMoreBtn.classList.add('is-hidden')
 
-  
+ 
+
 
 }
 }
