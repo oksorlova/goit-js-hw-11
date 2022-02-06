@@ -15,34 +15,35 @@ form.addEventListener ('submit', onSearch);
 
 async function onSearch(e) {
   e.preventDefault();
-  clearContainer();
+
   pixabayApi.searchQuery = e.currentTarget.elements.searchQuery.value;
   pixabayApi.resetPage ();
-await pixabayApi.fetchPicture().then(async hits => {
-  containerMarkup(hits)
-  console.log(pixabayApi.totalHits.totalHits)
-  if (pixabayApi.totalHits.totalHits > 40) {
+await pixabayApi.fetchPicture().then( hits => {
+  clearContainer();
+ containerMarkup(hits)
     loadMoreBtn.classList.remove('is-hidden')
+  
+  
+
+  if (hits.length === 0) {
+    Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+              loadMoreBtn.classList.add ('is-hidden');
   }
-
-  if (pixabayApi.totalHits.totalHits <= 40 && hits.length !== 0 ) {
-        Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
-                                loadMoreBtn.classList.add ('is-hidden');
-      }
-
-      if (hits.length === 0) {
-        Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-                  loadMoreBtn.classList.add ('is-hidden');
-      }
+      
 });
 };
 
     
 
 async function onLoadMore() {
-    await pixabayApi.fetchPicture().then(containerMarkup);
-
+    await pixabayApi.fetchPicture().then(async hits => {
+      await containerMarkup(hits)
+      if (pixabayApi.totalHits.totalHits <= 40 && hits.length !== 0 ) {
+        Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
+                                loadMoreBtn.classList.add ('is-hidden');
+      }
     
+    })
 }
 
 function containerMarkup (hits) {
@@ -66,8 +67,14 @@ function containerMarkup (hits) {
 
   gallery.insertAdjacentHTML ('beforeend', hitsList);
 
+  let maxPage = Math.ceil(pixabayApi.totalHits.totalHits / 40)
+  if (maxPage === pixabayApi.page - 1) {
+    Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
+    loadMoreBtn.classList.add('is-hidden')
+
   
 
+}
 }
 
 function clearContainer() {
